@@ -13,6 +13,7 @@ public class InfiniteTracingConfig {
     private final Double flakyPercentage;
     private final Long flakyCode;
     private final boolean usePlaintext;
+    private final boolean useOtlp;
 
     public InfiniteTracingConfig(Builder builder) {
         this.licenseKey = builder.licenseKey;
@@ -23,6 +24,7 @@ public class InfiniteTracingConfig {
         this.flakyPercentage = builder.flakyPercentage;
         this.flakyCode = builder.flakyCode;
         this.usePlaintext = builder.usePlaintext;
+        this.useOtlp = builder.useOtlp;
     }
 
     public static Builder builder() {
@@ -61,6 +63,10 @@ public class InfiniteTracingConfig {
         return usePlaintext;
     }
 
+    public boolean getUseOtlp() {
+        return useOtlp;
+    }
+
     public static class Builder {
         public int maxQueueSize;
         public Logger logger;
@@ -70,6 +76,7 @@ public class InfiniteTracingConfig {
         private Double flakyPercentage;
         private Long flakyCode;
         private boolean usePlaintext;
+        private boolean useOtlp;
 
         /**
          * The New Relic APM license key configured for the application.
@@ -141,6 +148,16 @@ public class InfiniteTracingConfig {
          */
         public Builder usePlaintext(boolean usePlaintext) {
             this.usePlaintext = usePlaintext;
+            return this;
+        }
+
+        /**
+         * The optional boolean to use OTLP as the data protocol
+         *
+         * @param useOtlp
+         */
+        public Builder useOtlp(boolean useOtlp) {
+            this.useOtlp = useOtlp;
             return this;
         }
 

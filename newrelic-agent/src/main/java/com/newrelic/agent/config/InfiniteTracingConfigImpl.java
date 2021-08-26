@@ -21,7 +21,9 @@ public class InfiniteTracingConfigImpl extends BaseConfig implements InfiniteTra
     public static final String FLAKY_PERCENTAGE = "_flakyPercentage";
     public static final String FLAKY_CODE = "_flakyCode";
     public static final String USE_PLAINTEXT = "plaintext";
+    public static final String USE_OTLP = "otlp";
     public static final boolean DEFAULT_USE_PLAINTEXT = false;
+    public static final boolean DEFAULT_USE_OTLP = false;
 
     static final String SYSTEM_PROPERTY_ROOT = AgentConfigImpl.SYSTEM_PROPERTY_ROOT + ROOT + ".";
 
@@ -81,6 +83,11 @@ public class InfiniteTracingConfigImpl extends BaseConfig implements InfiniteTra
     @Override
     public boolean getUsePlaintext() {
         return getProperty(USE_PLAINTEXT, DEFAULT_USE_PLAINTEXT);
+    }
+
+    @Override
+    public boolean getUseOtlp() {
+        return getProperty(USE_OTLP, DEFAULT_USE_OTLP);
     }
 
     @Override

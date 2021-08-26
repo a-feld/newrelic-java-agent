@@ -20,6 +20,8 @@ public interface InfiniteTracingConfig {
 
     boolean getUsePlaintext();
 
+    boolean getUseOtlp();
+
     boolean isEnabled();
 
 }
