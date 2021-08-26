@@ -8,7 +8,7 @@
 package com.newrelic.agent.service;
 
 import com.newrelic.Function;
-import com.newrelic.InfiniteTracing;
+import com.newrelic.InfiniteTracingNewRelic;
 import com.newrelic.InfiniteTracingConfig;
 import com.newrelic.agent.*;
 import com.newrelic.agent.attributes.AttributesService;
@@ -203,7 +203,7 @@ public class ServiceManagerImpl extends AbstractService implements ServiceManage
         rpmConnectionService = new RPMConnectionServiceImpl();
         transactionService = new TransactionService();
 
-        InfiniteTracing infiniteTracing = buildInfiniteTracing(configService);
+        InfiniteTracingNewRelic infiniteTracing = buildInfiniteTracing(configService);
         InfiniteTracingEnabledCheck infiniteTracingEnabledCheck = new InfiniteTracingEnabledCheck(configService);
         SpanEventCreationDecider spanEventCreationDecider = new SpanEventCreationDecider(configService);
         AgentConnectionEstablishedListener agentConnectionEstablishedListener = new UpdateInfiniteTracingAfterConnect(infiniteTracingEnabledCheck,
@@ -290,7 +290,7 @@ public class ServiceManagerImpl extends AbstractService implements ServiceManage
         ServiceTiming.logServiceTimings(getLogger());
     }
 
-    private InfiniteTracing buildInfiniteTracing(ConfigService configService) {
+    private InfiniteTracingNewRelic buildInfiniteTracing(ConfigService configService) {
         com.newrelic.agent.config.InfiniteTracingConfig config = configService.getDefaultAgentConfig().getInfiniteTracingConfig();
 
         InfiniteTracingConfig infiniteTracingConfig = InfiniteTracingConfig.builder()
@@ -305,7 +305,7 @@ public class ServiceManagerImpl extends AbstractService implements ServiceManage
                 .useOtlp(config.getUseOtlp())
                 .build();
 
-        return InfiniteTracing.initialize(infiniteTracingConfig, NewRelic.getAgent().getMetricAggregator());
+        return InfiniteTracingNewRelic.initialize(infiniteTracingConfig, NewRelic.getAgent().getMetricAggregator());
     }
 
     @Override

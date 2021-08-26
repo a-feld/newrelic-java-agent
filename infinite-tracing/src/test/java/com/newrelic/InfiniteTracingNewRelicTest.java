@@ -23,7 +23,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class InfiniteTracingTest {
+class InfiniteTracingNewRelicTest {
 
     @Mock
     private Logger logger;
@@ -39,14 +39,14 @@ class InfiniteTracingTest {
     private SpanEventSender spanEventSender;
 
     private LinkedBlockingDeque<SpanEvent> queue;
-    private InfiniteTracing target;
+    private InfiniteTracingNewRelic target;
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
         when(config.getLogger()).thenReturn(logger);
         queue = new LinkedBlockingDeque<>(1);
-        target = spy(new InfiniteTracing(config, aggregator, executorService, queue));
+        target = spy(new InfiniteTracingNewRelic(config, aggregator, executorService, queue));
         doReturn(channelManager).when(target).buildChannelManager(anyString(), ArgumentMatchers.<String, String>anyMap());
         doReturn(spanEventSender).when(target).buildSpanEventSender();
     }

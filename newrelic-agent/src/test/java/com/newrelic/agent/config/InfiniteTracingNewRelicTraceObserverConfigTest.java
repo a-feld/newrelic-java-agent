@@ -20,7 +20,7 @@ import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 
-public class InfiniteTracingTraceObserverConfigTest {
+public class InfiniteTracingNewRelicTraceObserverConfigTest {
     private Map<String, Object> localProps;
     private static final String TEST_HOST = "a non-empty string";
     private static final int TEST_PORT = 8080;

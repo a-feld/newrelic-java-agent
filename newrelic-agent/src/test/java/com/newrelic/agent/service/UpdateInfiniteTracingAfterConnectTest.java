@@ -7,7 +7,7 @@
 
 package com.newrelic.agent.service;
 
-import com.newrelic.InfiniteTracing;
+import com.newrelic.InfiniteTracingNewRelic;
 import com.newrelic.agent.service.analytics.InfiniteTracingEnabledCheck;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class UpdateInfiniteTracingAfterConnectTest {
     final String runToken = "abc123";
 
     @Mock
-    InfiniteTracing infiniteTracing;
+    InfiniteTracingNewRelic infiniteTracing;
     @Mock
     InfiniteTracingEnabledCheck infiniteTracingEnabledCheck;
 
