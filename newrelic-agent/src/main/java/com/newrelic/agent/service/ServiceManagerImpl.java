@@ -10,7 +10,6 @@ package com.newrelic.agent.service;
 import com.newrelic.Function;
 import com.newrelic.InfiniteTracing;
 import com.newrelic.InfiniteTracingConfig;
-import com.newrelic.InfiniteTracingNewRelic;
 import com.newrelic.agent.*;
 import com.newrelic.agent.attributes.AttributesService;
 import com.newrelic.agent.browser.BrowserService;

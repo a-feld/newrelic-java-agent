@@ -7,7 +7,7 @@
 
 package com.newrelic.agent.service;
 
-import com.newrelic.InfiniteTracingNewRelic;
+import com.newrelic.InfiniteTracing;
 import com.newrelic.agent.service.analytics.InfiniteTracingEnabledCheck;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,9 +18,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class UpdateInfiniteTracingAfterConnectTest {
 
@@ -28,7 +26,7 @@ public class UpdateInfiniteTracingAfterConnectTest {
     final String runToken = "abc123";
 
     @Mock
-    InfiniteTracingNewRelic infiniteTracing;
+    InfiniteTracing infiniteTracing;
     @Mock
     InfiniteTracingEnabledCheck infiniteTracingEnabledCheck;
 
