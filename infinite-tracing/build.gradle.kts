@@ -1,4 +1,5 @@
 plugins {
+    id("com.google.protobuf") version "0.8.17"
     id("java-library")
 }
 
