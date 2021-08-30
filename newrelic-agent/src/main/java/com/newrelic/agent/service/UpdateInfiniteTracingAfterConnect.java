@@ -7,7 +7,7 @@
 
 package com.newrelic.agent.service;
 
-import com.newrelic.InfiniteTracingNewRelic;
+import com.newrelic.InfiniteTracing;
 import com.newrelic.agent.AgentConnectionEstablishedListener;
 import com.newrelic.agent.service.analytics.InfiniteTracingEnabledCheck;
 
@@ -16,10 +16,10 @@ import java.util.Map;
 class UpdateInfiniteTracingAfterConnect implements AgentConnectionEstablishedListener {
 
     private final InfiniteTracingEnabledCheck infiniteTracingEnabledCheck;
-    private final InfiniteTracingNewRelic infiniteTracing;
+    private final InfiniteTracing infiniteTracing;
 
     public UpdateInfiniteTracingAfterConnect(InfiniteTracingEnabledCheck infiniteTracingEnabledCheck,
-            InfiniteTracingNewRelic infiniteTracing) {
+                                             InfiniteTracing infiniteTracing) {
         this.infiniteTracingEnabledCheck = infiniteTracingEnabledCheck;
         this.infiniteTracing = infiniteTracing;
     }
