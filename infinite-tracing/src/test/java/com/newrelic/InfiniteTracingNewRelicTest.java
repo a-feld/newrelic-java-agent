@@ -36,7 +36,7 @@ class InfiniteTracingNewRelicTest {
     @Mock
     private ChannelManager channelManager;
     @Mock
-    private SpanEventSender spanEventSender;
+    private NewRelicSpanSender newRelicSpanSender;
 
     private LinkedBlockingDeque<SpanEvent> queue;
     private InfiniteTracingNewRelic target;
@@ -48,7 +48,7 @@ class InfiniteTracingNewRelicTest {
         queue = new LinkedBlockingDeque<>(1);
         target = spy(new InfiniteTracingNewRelic(config, aggregator, executorService, queue));
         doReturn(channelManager).when(target).buildChannelManager(anyString(), ArgumentMatchers.<String, String>anyMap());
-        doReturn(spanEventSender).when(target).buildSpanEventSender();
+        doReturn(newRelicSpanSender).when(target).buildSpanEventSender();
     }
 
     @Test
@@ -61,7 +61,7 @@ class InfiniteTracingNewRelicTest {
 
         verify(target).buildChannelManager("token1", ImmutableMap.of("key1", "value1"));
         verify(target).buildSpanEventSender();
-        verify(executorService).submit(spanEventSender);
+        verify(executorService).submit(newRelicSpanSender);
         verify(channelManager).updateMetadata("token2", ImmutableMap.of("key2", "value2"));
         verify(channelManager).shutdownChannelAndBackoff(0);
 

@@ -16,7 +16,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-import static com.newrelic.SpanConverterTest.buildSpanEvent;
+import static com.newrelic.NewRelicSpanConverterTest.buildSpanEvent;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class SpanEventSenderTest {
+class NewRelicSpanSenderTest {
 
     @Mock
     private Logger logger;
@@ -47,14 +47,14 @@ class SpanEventSenderTest {
     @Mock
     private ClientCallStreamObserver<V1.Span> observer;
 
-    private SpanEventSender target;
+    private NewRelicSpanSender target;
 
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
         when(config.getLogger()).thenReturn(logger);
         when(channelManager.getSpanObserver()).thenReturn(observer);
-        target = spy(new SpanEventSender(config, queue, aggregator, channelManager));
+        target = spy(new NewRelicSpanSender(config, queue, aggregator, channelManager));
     }
 
     @Test
@@ -97,7 +97,7 @@ class SpanEventSenderTest {
 
         target.pollAndWrite();
 
-        verify(target).writeToObserver(observer, SpanConverter.convert(spanEvent));
+        verify(target).writeToObserver(observer, NewRelicSpanConverter.convert(spanEvent));
     }
 
     @Test

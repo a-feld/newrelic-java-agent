@@ -6,23 +6,27 @@ import com.newrelic.api.agent.Logger;
 import com.newrelic.api.agent.MetricAggregator;
 import com.newrelic.trace.v1.V1;
 import io.grpc.stub.ClientCallStreamObserver;
+import io.opentelemetry.proto.collector.trace.v1.ExportTraceServiceRequest;
+import io.opentelemetry.proto.collector.trace.v1.TraceServiceProto;
+import io.opentelemetry.proto.common.v1.InstrumentationLibrary;
+import io.opentelemetry.proto.trace.v1.InstrumentationLibrarySpans;
+import io.opentelemetry.proto.trace.v1.ResourceSpans;
+import io.opentelemetry.proto.trace.v1.Span;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
-class SpanEventSender implements Runnable {
+class OpenTelemetrySpanSender implements Runnable {
 
     private final Logger logger;
     private final BlockingQueue<SpanEvent> queue;
     private final MetricAggregator aggregator;
-    private final ChannelManager channelManager;
 
-    SpanEventSender(InfiniteTracingConfig config, BlockingQueue<SpanEvent> queue, MetricAggregator aggregator, ChannelManager channelManager) {
+    OpenTelemetrySpanSender(InfiniteTracingConfig config, BlockingQueue<SpanEvent> queue, MetricAggregator aggregator) {
         this.logger = config.getLogger();
         this.queue = queue;
         this.aggregator = aggregator;
-        this.channelManager = channelManager;
     }
 
     /**
@@ -44,14 +48,6 @@ class SpanEventSender implements Runnable {
 
     @VisibleForTesting
     void pollAndWrite() {
-        // Get stream observer
-        ClientCallStreamObserver<V1.Span> observer = channelManager.getSpanObserver();
-
-        // Confirm the observer is ready
-        if (!awaitReadyObserver(observer)) {
-            return;
-        }
-
         // Poll queue for span
         SpanEvent span = pollSafely();
         if (span == null) {
@@ -59,8 +55,7 @@ class SpanEventSender implements Runnable {
         }
 
         // Convert span and write to observer
-        V1.Span convertedSpan = SpanConverter.convert(span);
-        writeToObserver(observer, convertedSpan);
+        Span convertedSpan = OpenTelemetrySpanConverter.convert(span);
     }
 
     @VisibleForTesting
@@ -90,9 +85,13 @@ class SpanEventSender implements Runnable {
     }
 
     @VisibleForTesting
-    void writeToObserver(ClientCallStreamObserver<V1.Span> observer, V1.Span span) {
+    void writeToObserver(Span span) {
+        final InstrumentationLibrary instrumentationLibrary = InstrumentationLibrary.newBuilder().setName("newrelic").build();
+        final InstrumentationLibrarySpans instrumentationLibrarySpans = InstrumentationLibrarySpans.newBuilder().setInstrumentationLibrary(instrumentationLibrary).addSpans(span).build();
+        final ResourceSpans resourceSpans = ResourceSpans.newBuilder().addInstrumentationLibrarySpans(instrumentationLibrarySpans).build();
+        final ExportTraceServiceRequest request = ExportTraceServiceRequest.newBuilder().addResourceSpans(resourceSpans).build();
         try {
-            observer.onNext(span);
+            //observer.onNext(span);
         } catch (Throwable t) {
             logger.log(Level.SEVERE, t, "Unable to send span.");
             throw t;

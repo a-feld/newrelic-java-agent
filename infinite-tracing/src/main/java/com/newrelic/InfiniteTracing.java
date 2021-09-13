@@ -17,7 +17,7 @@ public interface InfiniteTracing extends Consumer<SpanEvent> {
      */
     static InfiniteTracing initialize(InfiniteTracingConfig config, MetricAggregator aggregator) {
         if (config.getUseOtlp()) {
-            return null;
+            return InfiniteTracingOpenTelemetry.initialize(config, aggregator);
         } else {
             return InfiniteTracingNewRelic.initialize(config, aggregator);
         }

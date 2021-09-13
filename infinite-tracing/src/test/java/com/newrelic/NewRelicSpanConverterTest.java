@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class SpanConverterTest {
+class NewRelicSpanConverterTest {
 
     @Test
     void convert_Valid() throws IOException {
         SpanEvent spanEvent = buildSpanEvent();
 
-        V1.Span result = SpanConverter.convert(spanEvent);
+        V1.Span result = NewRelicSpanConverter.convert(spanEvent);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         result.writeTo(baos);
         V1.Span deserialized = V1.Span.parseFrom(baos.toByteArray());

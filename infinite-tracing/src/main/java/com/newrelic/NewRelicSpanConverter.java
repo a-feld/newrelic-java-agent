@@ -6,9 +6,9 @@ import com.newrelic.trace.v1.V1;
 import java.util.HashMap;
 import java.util.Map;
 
-class SpanConverter {
+class NewRelicSpanConverter {
 
-    private SpanConverter() {
+    private NewRelicSpanConverter() {
     }
 
     /**

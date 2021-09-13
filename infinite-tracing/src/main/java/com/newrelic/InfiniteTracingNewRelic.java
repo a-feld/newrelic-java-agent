@@ -20,7 +20,7 @@ public class InfiniteTracingNewRelic implements InfiniteTracing {
 
     private final Object lock = new Object();
     @GuardedBy("lock") private Future<?> spanEventSenderFuture;
-    @GuardedBy("lock") private SpanEventSender spanEventSender;
+    @GuardedBy("lock") private NewRelicSpanSender newRelicSpanSender;
     @GuardedBy("lock") private ChannelManager channelManager;
 
     @VisibleForTesting
@@ -43,8 +43,8 @@ public class InfiniteTracingNewRelic implements InfiniteTracing {
     }
 
     @VisibleForTesting
-    SpanEventSender buildSpanEventSender() {
-        return new SpanEventSender(config, queue, aggregator, channelManager);
+    NewRelicSpanSender buildSpanEventSender() {
+        return new NewRelicSpanSender(config, queue, aggregator, channelManager);
     }
 
     @Override
@@ -57,8 +57,8 @@ public class InfiniteTracingNewRelic implements InfiniteTracing {
             }
             logger.log(Level.INFO, "Starting Infinite Tracing.");
             channelManager = buildChannelManager(agentRunToken, requestMetadata);
-            spanEventSender = buildSpanEventSender();
-            spanEventSenderFuture = executorService.submit(spanEventSender);
+            newRelicSpanSender = buildSpanEventSender();
+            spanEventSenderFuture = executorService.submit(newRelicSpanSender);
         }
     }
 
@@ -72,7 +72,7 @@ public class InfiniteTracingNewRelic implements InfiniteTracing {
             spanEventSenderFuture.cancel(true);
             channelManager.shutdownChannelForever();
             spanEventSenderFuture = null;
-            spanEventSender = null;
+            newRelicSpanSender = null;
             channelManager = null;
         }
     }
